@@ -1,22 +1,17 @@
-import { invoke } from "@tauri-apps/api/core";
-
-let greetInputEl: HTMLInputElement | null;
-let greetMsgEl: HTMLElement | null;
-
-async function greet() {
-  if (greetMsgEl && greetInputEl) {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    greetMsgEl.textContent = await invoke("greet", {
-      name: greetInputEl.value,
-    });
-  }
-}
-
+// 我們的 Widget 核心互動邏輯
 window.addEventListener("DOMContentLoaded", () => {
-  greetInputEl = document.querySelector("#greet-input");
-  greetMsgEl = document.querySelector("#greet-msg");
-  document.querySelector("#greet-form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    greet();
+  const bottomLeft = document.getElementById("bottom-left");
+  const rightSide = document.getElementById("right-side");
+
+  bottomLeft?.addEventListener("click", () => {
+    if (rightSide) {
+      // 這裡就是你點擊後，右側會發生的魔法！
+      rightSide.innerHTML = `
+        <div style="padding: 20px;">
+          <h2>這是擴展後的內容</h2>
+          <p>我們可以在這裡放時鐘、日曆，或是你的播放列表喔！</p>
+        </div>
+      `;
+    }
   });
-});
+}); 

@@ -12,12 +12,17 @@
   "app": {
     "withGlobalTauri": true,
     "windows": [
-      {
-        "title": "project_iroha_player",
-        "width": 800,
-        "height": 600
-      }
-    ],
+  {
+    "fullscreen": false,
+    "resizable": true,
+    "title": "Iroha Player",
+    "transparent": true,
+    "decorations": false,
+    "alwaysOnTop": true,
+    "width": 800,
+    "height": 400
+  }
+],
     "security": {
       "csp": null
     }
