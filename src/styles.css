@@ -161,4 +161,129 @@ html, body {
   animation: fadeIn 0.3s ease;
 }
 
-/* 記得保留之前的時鐘樣式和 fadeIn 動畫喔！ */
+/* 記得保留之前的時鐘樣式和 fadeIn 動畫喔！ */ 
+
+/* === 🎵 音樂播放器區塊 === */
+.player-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* 元素之間的距離 */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.song-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* 加一點陰影讓字更清楚！ */
+}
+
+/* 按鈕排排站 */
+.player-controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+/* 圓圓的玻璃按鈕 */
+.ctrl-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: white;
+  width: 45px;
+  height: 45px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.1); /* 滑鼠放上去會變大一點點喔！ */
+}
+
+/* 進度條魔法 */
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 90%;
+}
+
+.time-text {
+  font-size: 12px;
+  color: #ccc;
+}
+
+#progress-bar {
+  flex: 1;
+  cursor: pointer;
+  accent-color: white; /* 讓進度條變成白色的，比較搭！ */
+} 
+/* === 📺 播放清單與影片區 === */
+.flex-col {
+  flex-direction: column;
+  justify-content: flex-start !important; /* 讓內容從上面開始排 */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* 影片播放器外觀 */
+#main-media-player {
+  width: 100%;
+  max-height: 40%;
+  border-radius: 12px;
+  background: black;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* 拖曳魔法陣的樣式 */
+.drop-zone {
+  width: 100%;
+  padding: 30px;
+  border: 2px dashed rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  text-align: center;
+  color: #ccc;
+  background: rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+/* 當檔案拖到上面的時候會發亮喔！ */
+.drop-zone.dragover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: white;
+  color: white;
+}
+
+/* 播放清單的外觀 */
+.playlist-container {
+  width: 100%;
+  flex: 1;
+  overflow-y: auto; /* 歌太多的時候可以滑動 */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.playlist-item {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.playlist-item:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateX(5px); /* 滑過去會稍微往右彈一下，かわいい！ */
+} 

@@ -11,34 +11,73 @@
     <div class="app-container">
       <!-- 左邊那一欄 -->
       <div class="left-panel">
-        <div id="top-left" class="panel-section">
-          🎵 音樂控制
+        <!-- 左上角：音樂播放器介面 -->
+        <div id="top-left" class="panel-section player-section">
+          <!-- 顯示歌名的地方 -->
+          <div class="song-info">
+            <div class="song-title" id="song-title">還沒有選歌喔～</div>
+          </div>
+          
+          <!-- 播放控制按鈕 -->
+          <div class="player-controls">
+            <button class="ctrl-btn" id="btn-prev">⏮️</button>
+            <button class="ctrl-btn" id="btn-play">▶️</button>
+            <button class="ctrl-btn" id="btn-next">⏭️</button>
+          </div>
+
+          <!-- 音樂進度條 -->
+          <div class="progress-container">
+            <span class="time-text" id="time-current">0:00</span>
+            <input type="range" id="progress-bar" min="0" max="100" value="0">
+            <span class="time-text" id="time-total">0:00</span>
+          </div>
+
+          <!-- 隱藏的魔法播放器 (負責真正在背景播聲音的) -->
+          <audio id="audio-player"></audio>
         </div>
         <!-- 這裡變成兩個按鈕啦！ -->
         <div id="bottom-left" class="panel-section bottom-menu">
+          <!-- 改成這個！ -->
+          <div class="menu-btn" id="btn-playlist">📺 播放清單</div>
           <div class="menu-btn" id="btn-clock">🕒 時鐘</div>
           <div class="menu-btn" id="btn-calendar">📅 日曆</div>
-        </div>
+        </div> 
       </div>
 
       <!-- 右側內容區 (一開始是空的喔) -->
-      <div id="right-side" class="right-panel">
+      
+        <!-- 右側內容區 -->
+        <div id="right-side" class="right-panel">
+          
+          <!-- 播放清單與影片區 -->
+          <div id="content-playlist" class="widget-content flex-col">
+            <!-- 影片播放器 -->
+            <video id="main-media-player" controls style="display: none;"></video>
+            
+            <!-- 拖曳區 -->
+            <div id="drop-zone" class="drop-zone">
+              ✨ 把 MP4 影片拖曳到這裡放開！ ✨
+            </div>
+
+            <!-- 清單區 -->
+            <div id="playlist-container" class="playlist-container"></div>
+          </div>
+
+          <!-- 時鐘組件 -->
+          <div id="content-clock" class="widget-content">
+            <div class="clock-container">
+              <h1 id="time-display">00:00:00</h1>
+            </div>
+          </div>
+
+          <!-- 日曆組件 -->
+          <div id="content-calendar" class="widget-content">
+            <div class="clock-container">
+               <p id="date-display">2024年1月1日 星期一</p>
+            </div>
+          </div>
+        </div>
         
-        <!-- 時鐘組件 (預設隱藏) -->
-        <div id="content-clock" class="widget-content">
-          <div class="clock-container">
-            <h1 id="time-display">00:00:00</h1>
-          </div>
-        </div>
-
-        <!-- 日曆組件 (預設隱藏，先放簡單的日期，之後可以擴充成真日曆！) -->
-        <div id="content-calendar" class="widget-content">
-          <div class="clock-container">
-             <p id="date-display">2024年1月1日 星期一</p>
-          </div>
-        </div>
-
-      </div>
     </div>
   </body>
   
