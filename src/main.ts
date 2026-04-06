@@ -136,42 +136,42 @@ window.addEventListener("DOMContentLoaded", () => {
     if (titleDisplay) titleDisplay.textContent = fileName;
   }
   // === 📺 播放清單與拖曳魔法 ===
+  // === 📺 播放清單與拖曳魔法 ===
   const btnPlaylist = document.getElementById('btn-playlist');
   const contentPlaylist = document.getElementById('content-playlist');
   
-  // 記得綁定按鈕切換右邊的畫面喔！
   btnPlaylist?.addEventListener('click', () => {
     toggleWidget('playlist', contentPlaylist);
   });
 
-  const dropZone = document.getElementById('drop-zone');
+  // 🌟 我們把目標從 dropZone 改成 contentPlaylist（整個右邊區塊）！
   const playlistContainer = document.getElementById('playlist-container');
   const mediaPlayer = document.getElementById('main-media-player') as HTMLVideoElement;
   
-  // 這是余幫你準備的包包，用來裝拖進來的檔案！
   let myPlaylist: File[] = [];
 
-  // 1. 檔案拖到上空時的反應
-  dropZone?.addEventListener('dragover', (e) => {
-    e.preventDefault(); // 必須加這個，不然瀏覽器會直接打開檔案
-    dropZone.classList.add('dragover');
+  // 1. 檔案拖到整個右側上空時
+  contentPlaylist?.addEventListener('dragover', (e) => {
+    e.preventDefault(); 
+    e.stopPropagation(); 
+    
+    contentPlaylist.classList.add('dragover'); // 整個右邊發亮！
   });
 
-  // 2. 檔案離開上空時的反應
-  dropZone?.addEventListener('dragleave', () => {
-    dropZone.classList.remove('dragover');
+  // 2. 檔案離開右側上空時
+  contentPlaylist?.addEventListener('dragleave', () => {
+    contentPlaylist.classList.remove('dragover');
   });
 
-  // 3. 檔案「放開」時的魔法！
-  dropZone?.addEventListener('drop', (e) => {
+  // 3. 檔案在右側放開時的魔法！
+  contentPlaylist?.addEventListener('drop', (e) => {
     e.preventDefault();
-    dropZone.classList.remove('dragover');
+    contentPlaylist.classList.remove('dragover');
 
     if (e.dataTransfer?.files) {
       const files = Array.from(e.dataTransfer.files);
       
       files.forEach(file => {
-        // 🌟 這裡改成只接受影片格式，而且檔案名稱結尾要是 .mp4
         if (file.type.includes('video/') && file.name.toLowerCase().endsWith('.mp4')) {
           myPlaylist.push(file);
         } else {
@@ -179,10 +179,11 @@ window.addEventListener("DOMContentLoaded", () => {
         }
       });
       
-      updatePlaylistUI();
+      updatePlaylistUI(); // 呼叫畫面上更新的魔法
     }
+  }); // 👈 呼～余幫你把原本漏掉的括號補在這邊了！
 
-  // 把包包裡的歌顯示在畫面上
+  // 🌟 4. 把更新畫面的函數拉出來，不要塞在事件裡面喔！
   function updatePlaylistUI() {
     if (!playlistContainer) return;
     playlistContainer.innerHTML = ''; 
@@ -190,8 +191,6 @@ window.addEventListener("DOMContentLoaded", () => {
     myPlaylist.forEach((file) => {
       const item = document.createElement('div');
       item.className = 'playlist-item';
-      
-      // 直接顯示影片圖示 🎬
       item.textContent = `🎬 ${file.name}`;
       
       item.onclick = () => playMedia(file);
@@ -199,19 +198,15 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   } 
 
-  // 播放影片/音樂的魔法
-
+  // 🌟 5. 播放影片的魔法也拉出來獨立放好！
   function playMedia(file: File) {
-    // 瀏覽器自帶的魔法：把實體檔案變成可以播放的虛擬網址！
     const fileUrl = URL.createObjectURL(file);
     mediaPlayer.src = fileUrl;
-    mediaPlayer.style.display = 'block'; // 把隱藏的播放器秀出來
+    mediaPlayer.style.display = 'block'; 
     mediaPlayer.play();
 
-    // 如果左邊的歌名有顯示，順便更新一下！
     const titleDisplay = document.getElementById('song-title');
     if (titleDisplay) titleDisplay.textContent = file.name;
-  }
-}); 
+  } 
 
 }); 

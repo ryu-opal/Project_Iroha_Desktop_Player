@@ -50,18 +50,16 @@
         <div id="right-side" class="right-panel">
           
           <!-- 播放清單與影片區 -->
-          <div id="content-playlist" class="widget-content flex-col">
-            <!-- 影片播放器 -->
-            <video id="main-media-player" controls style="display: none;"></video>
-            
-            <!-- 拖曳區 -->
-            <div id="drop-zone" class="drop-zone">
-              ✨ 把 MP4 影片拖曳到這裡放開！ ✨
-            </div>
-
-            <!-- 清單區 -->
-            <div id="playlist-container" class="playlist-container"></div>
+          <!-- 把 index.html 的右側播放清單區改成這樣喔！ -->
+        <div id="content-playlist" class="widget-content flex-col">
+          <!-- 影片播放器 -->
+          <video id="main-media-player" controls style="display: none;"></video>
+          
+          <!-- 🌟 我們把原本的 drop-zone 刪掉了，直接放清單容器！ -->
+          <div id="playlist-container" class="playlist-container">
+            <!-- 這裡預設是空的，等主人把檔案拉進來！ -->
           </div>
+        </div>
 
           <!-- 時鐘組件 -->
           <div id="content-clock" class="widget-content">
@@ -77,7 +75,7 @@
             </div>
           </div>
         </div>
-        
+
     </div>
   </body>
   
