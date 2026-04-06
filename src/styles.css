@@ -1,10 +1,164 @@
-/* 讓你的應用程式變成漂亮的黑色半透明底 */
-body {
+/* 基礎設定與防滑動魔法 */
+html, body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.7); /* 半透明黑 */
-  backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
+  width: 100vw;
+  
+  /* 🪄 防滑動魔法加在這裡！ */
+  overflow: hidden; /* 絕對不允許出現滾動條 */
+  overscroll-behavior: none; /* 禁止拉扯回彈的特效 */
+  touch-action: none; /* 禁止觸控板的縮放和滑動手勢 */
+
+  background: rgba(20, 20, 20, 0.4); 
+  backdrop-filter: blur(20px) saturate(150%); 
   color: white;
-  display: flex; /* 這就是我們強大的排版工具 */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* 主容器排版 */
+.app-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* 左側面板 */
+.left-panel {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  /* 加上淡淡的右邊框當作玻璃切面 */
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.2); /* 左側稍微深一點點 */
+}
+
+.panel-section {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clickable {
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.clickable:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 右側面板 */
+.right-panel {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 分頁按鈕區 (Chrome 分頁感) */
+.tab-header {
+  display: flex;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tab-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.tab-btn:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tab-btn.active {
+  color: white;
+  border-bottom: 2px solid #fff; /* 活躍的分頁有底線 */
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* 分頁內容區 */
+.tab-content {
+  display: none; /* 預設隱藏 */
+  padding: 20px;
+  flex: 1;
+}
+
+.tab-content.active {
+  display: block; /* 活躍時顯示 */
+  animation: fadeIn 0.3s ease;
+}
+
+/* 時鐘樣式 */
+.clock-container {
+  text-align: center;
+  margin-top: 50px;
+}
+#time-display {
+  font-size: 4rem;
+  margin: 0;
+  font-weight: 300;
+  letter-spacing: 2px;
+}
+/* 左上角音樂區與下方的分隔線 */
+#top-left {
+  /* 畫一條跟右邊框一樣的半透明白色細線 */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+}
+#date-display {
+  font-size: 1.2rem;
+  color: #ccc;
+  margin-top: 10px;
+}
+
+/* 淡入動畫 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+} 
+
+/* 左下角選單區的排版 */
+.bottom-menu {
+  flex-direction: column; /* 讓按鈕直直排下來 */
+  gap: 10px; /* 按鈕之間的距離 */
+  justify-content: center;
+}
+
+/* 左下角按鈕的樣式 */
+.menu-btn {
+  width: 80%;
+  padding: 10px 15px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.menu-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* 右邊顯示內容的容器 */
+.widget-content {
+  display: none; /* 預設把大家都藏起來！ */
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 加上 active 魔法就會跑出來囉！ */
+.widget-content.active {
+  display: flex; 
+  animation: fadeIn 0.3s ease;
+}
+
+/* 記得保留之前的時鐘樣式和 fadeIn 動畫喔！ */

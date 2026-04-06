@@ -4,20 +4,42 @@
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="/src/styles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tauri App</title>
+    <title>Iroha Player</title>
     <script type="module" src="/src/main.ts" defer></script>
   </head>
-
   <body>
-<div style="display: flex; width: 100vw; height: 100vh;">
-  <!-- 左邊那一欄 -->
-  <div style="display: flex; flex-direction: column; width: 30%;">
-    <!-- 加上 id="top-left" -->
-    <div id="top-left" style="flex: 1; border: 1px solid white;">Top-Left (音樂)</div>
-    <!-- 加上 id="bottom-left" -->
-    <div id="bottom-left" style="flex: 1; border: 1px solid white; cursor: pointer;">Bottom-Left (點我展開)</div>
-  </div>
-  <!-- 加上 id="right-side" -->
-  <div id="right-side" style="width: 70%; border: 1px solid white;">Right-Side (分頁)</div>
+    <div class="app-container">
+      <!-- 左邊那一欄 -->
+      <div class="left-panel">
+        <div id="top-left" class="panel-section">
+          🎵 音樂控制
+        </div>
+        <!-- 這裡變成兩個按鈕啦！ -->
+        <div id="bottom-left" class="panel-section bottom-menu">
+          <div class="menu-btn" id="btn-clock">🕒 時鐘</div>
+          <div class="menu-btn" id="btn-calendar">📅 日曆</div>
+        </div>
+      </div>
+
+      <!-- 右側內容區 (一開始是空的喔) -->
+      <div id="right-side" class="right-panel">
+        
+        <!-- 時鐘組件 (預設隱藏) -->
+        <div id="content-clock" class="widget-content">
+          <div class="clock-container">
+            <h1 id="time-display">00:00:00</h1>
+          </div>
+        </div>
+
+        <!-- 日曆組件 (預設隱藏，先放簡單的日期，之後可以擴充成真日曆！) -->
+        <div id="content-calendar" class="widget-content">
+          <div class="clock-container">
+             <p id="date-display">2024年1月1日 星期一</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </body>
+  
 </html>
