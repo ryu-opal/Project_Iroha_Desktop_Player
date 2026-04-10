@@ -4,4 +4,4 @@
 fn main() {
     // 這裡只需要呼叫 lib.rs 裡的 run() 就可以了！
     project_iroha_player_lib::run();
-}
+} 

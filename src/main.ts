@@ -176,19 +176,69 @@ window.addEventListener("DOMContentLoaded", () => {
   setupDragDrop();
 
   function updatePlaylistUI() {
-    if (!playlistContainer) return;
-    playlistContainer.innerHTML = ''; 
+  if (!playlistContainer) return;
+  
+  // 1. 第一步：先打掃乾淨！把原本的內容清空 ( ´ ▽ ` )ﾉ
+  playlistContainer.innerHTML = ''; 
 
-    myPlaylist.forEach((filePath) => {
-      const fileName = filePath.split('\\').pop()?.split('/').pop() || "未知影片";
-      const item = document.createElement('div');
-      item.className = 'playlist-item';
-      item.textContent = `🎬 ${fileName}`;
-      
-      item.onclick = () => playMedia(filePath);
-      playlistContainer.appendChild(item);
-    });
-  } 
+  // 2. 第二步：如果主人還沒有放影片，我們給個可愛的提示～
+  if (myPlaylist.length === 0) {
+    playlistContainer.innerHTML = '<div style="padding: 20px; text-align: center;">目前還沒有影片喔，快把影片拖進來給余看吧！(o´ω`o)</div>';
+    return;
+  }
+
+  // 3. 第三步：開始變魔術！建立一個真正的 HTML 表格 (Table)
+  const table = document.createElement('table');
+  table.className = 'playlist-table'; // 給它一個名字，之後可以在 css 幫它化妝！
+  table.style.width = '100%'; // 讓表格填滿空間
+  table.style.borderCollapse = 'collapse'; // 讓表格的線條更乾淨
+
+  // 4. 第四步：加上表格的「標題列」 (就像頭上一樣！)
+  table.innerHTML = `
+    <thead>
+      <tr style="background-color: #ffb6c1; color: white; text-align: left;">
+        <th style="padding: 10px; border-radius: 5px 0 0 0;">🎬 影片名稱</th>
+        <th style="padding: 10px; border-radius: 0 5px 0 0;">▶️ 播放動作</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  `;
+
+  // 抓出表格的「肚子」(tbody)，準備把影片塞進去
+  const tbody = table.querySelector('tbody');
+
+  // 5. 第五步：把我們清單裡的影片，一個一個做成表格的「每一列」(tr)
+  myPlaylist.forEach((filePath) => {
+    const fileName = filePath.split('\\').pop()?.split('/').pop() || "未知影片";
+    
+    // 建立新的一列
+    const tr = document.createElement('tr');
+    tr.style.borderBottom = '1px solid #f0f0f0'; // 畫一條淡淡的分隔線
+
+    // 第一格：影片名稱
+    const tdName = document.createElement('td');
+    tdName.style.padding = '10px';
+    tdName.textContent = fileName;
+
+    // 第二格：播放按鈕
+    const tdAction = document.createElement('td');
+    tdAction.style.padding = '10px';
+    
+    const playBtn = document.createElement('button');
+    playBtn.textContent = '播播看！';
+    playBtn.style.cursor = 'pointer';
+    playBtn.onclick = () => playMedia(filePath); // 點擊就召喚播放魔法！
+
+    // 把格子放進列，再把列放進肚子裡！(* ´ З `*)
+    tdAction.appendChild(playBtn);
+    tr.appendChild(tdName);
+    tr.appendChild(tdAction);
+    tbody?.appendChild(tr);
+  });
+
+  // 6. 最後一步：把做好的精美表格放到畫面上！🎉
+  playlistContainer.appendChild(table);
+}
 
   async function playMedia(filePath: string) {
     try {

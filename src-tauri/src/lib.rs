@@ -34,4 +34,4 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![get_audio_files, read_file_as_bytes])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-}
+} 
