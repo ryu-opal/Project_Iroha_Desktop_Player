@@ -190,14 +190,22 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   } 
 
-  function playMedia(filePath: string) {
-    // 🌟 關鍵魔法：把電腦路徑轉成網頁可讀格式！
-    const fileUrl = convertFileSrc(filePath);
-    mediaPlayer.src = fileUrl;
-    mediaPlayer.style.display = 'block'; 
-    mediaPlayer.play();
+  async function playMedia(filePath: string) {
+    try {
+      // 🌟 直接從 Rust 讀取檔案內容並轉成 Blob
+      const fileData: Uint8Array = await invoke("read_file_as_bytes", { path: filePath }); 
 
-    const titleDisplay = document.getElementById('song-title');
-    if (titleDisplay) titleDisplay.textContent = filePath.split('\\').pop()?.split('/').pop() || "正在播放";
-  } 
+      const blob = new Blob([fileData], { type: 'video/mp4' });
+      const fileUrl = URL.createObjectURL(blob);
+      
+      mediaPlayer.src = fileUrl;
+      mediaPlayer.style.display = 'block'; 
+      mediaPlayer.play();
+      
+      const titleDisplay = document.getElementById('song-title');
+      if (titleDisplay) titleDisplay.textContent = filePath.split('\\').pop()?.split('/').pop() || "正在播放";
+    } catch (e) {
+      console.error("嗚嗚，讀不到檔案：", e);
+    }
+  }
 }); 
