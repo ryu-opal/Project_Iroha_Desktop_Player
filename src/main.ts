@@ -1,6 +1,9 @@
 // 這是 Tauri 的魔法橋樑，用來呼叫 Rust 和轉換檔案路徑！
 import { invoke } from "@tauri-apps/api/core";
-import { convertFileSrc } from "@tauri-apps/api/core";
+import { convertFileSrc } from "@tauri-apps/api/core"; 
+import { getCurrentWebview } from "@tauri-apps/api/webview"; 
+import { getCurrentWindow } from "@tauri-apps/api/window";
+
 window.addEventListener("DOMContentLoaded", () => {
   // 抓出左邊的按鈕
   const btnClock = document.getElementById('btn-clock');
@@ -135,78 +138,66 @@ window.addEventListener("DOMContentLoaded", () => {
     const titleDisplay = document.getElementById('song-title');
     if (titleDisplay) titleDisplay.textContent = fileName;
   }
-  // === 📺 播放清單與拖曳魔法 ===
-  // === 📺 播放清單與拖曳魔法 ===
+  // === 📺 播放清單與拖曳魔法 (Tauri 專屬進階版！✨) ===
   const btnPlaylist = document.getElementById('btn-playlist');
   const contentPlaylist = document.getElementById('content-playlist');
+  const playlistContainer = document.getElementById('playlist-container');
+  const mediaPlayer = document.getElementById('main-media-player') as HTMLVideoElement;
   
+  // 🌟 我們改用字串陣列來存檔案路徑喔！
+  let myPlaylist: string[] = [];
+
   btnPlaylist?.addEventListener('click', () => {
     toggleWidget('playlist', contentPlaylist);
   });
 
-  // 🌟 我們把目標從 dropZone 改成 contentPlaylist（整個右邊區塊）！
-  const playlistContainer = document.getElementById('playlist-container');
-  const mediaPlayer = document.getElementById('main-media-player') as HTMLVideoElement;
-  
-  let myPlaylist: File[] = [];
 
-  // 1. 檔案拖到整個右側上空時
-  contentPlaylist?.addEventListener('dragover', (e) => {
-    e.preventDefault(); 
-    e.stopPropagation(); 
+  async function setupDragDrop() {
+    const appWindow = getCurrentWindow();
     
-    contentPlaylist.classList.add('dragover'); // 整個右邊發亮！
-  });
-
-  // 2. 檔案離開右側上空時
-  contentPlaylist?.addEventListener('dragleave', () => {
-    contentPlaylist.classList.remove('dragover');
-  });
-
-  // 3. 檔案在右側放開時的魔法！
-  contentPlaylist?.addEventListener('drop', (e) => {
-    e.preventDefault();
-    contentPlaylist.classList.remove('dragover');
-
-    if (e.dataTransfer?.files) {
-      const files = Array.from(e.dataTransfer.files);
-      
-      files.forEach(file => {
-        if (file.type.includes('video/') && file.name.toLowerCase().endsWith('.mp4')) {
-          myPlaylist.push(file);
-        } else {
-          console.log("這不是 MP4 喔，余暫時不收喔～ ( ´• ω •` )");
+    // 當有檔案拖進來時...
+    appWindow.onDragDropEvent((event) => {
+      if (event.payload.type === 'drop') {
+        const paths = event.payload.paths; // 這是 Tauri 給我們的路徑清單！
+        
+        // 幫主人過濾一下，只要 mp4 檔！
+        const mp4Files = paths.filter(p => p.toLowerCase().endsWith('.mp4'));
+        
+        if (mp4Files.length > 0) {
+          myPlaylist.push(...mp4Files);
+          updatePlaylistUI();
+          toggleWidget('playlist', contentPlaylist); // 自動切換畫面
         }
-      });
-      
-      updatePlaylistUI(); // 呼叫畫面上更新的魔法
-    }
-  }); // 👈 呼～余幫你把原本漏掉的括號補在這邊了！
+      }
+    });
+  }
+  
+  // 記得要呼叫這個初始化魔法喔！
+  setupDragDrop();
 
-  // 🌟 4. 把更新畫面的函數拉出來，不要塞在事件裡面喔！
   function updatePlaylistUI() {
     if (!playlistContainer) return;
     playlistContainer.innerHTML = ''; 
 
-    myPlaylist.forEach((file) => {
+    myPlaylist.forEach((filePath) => {
+      const fileName = filePath.split('\\').pop()?.split('/').pop() || "未知影片";
       const item = document.createElement('div');
       item.className = 'playlist-item';
-      item.textContent = `🎬 ${file.name}`;
+      item.textContent = `🎬 ${fileName}`;
       
-      item.onclick = () => playMedia(file);
+      item.onclick = () => playMedia(filePath);
       playlistContainer.appendChild(item);
     });
   } 
 
-  // 🌟 5. 播放影片的魔法也拉出來獨立放好！
-  function playMedia(file: File) {
-    const fileUrl = URL.createObjectURL(file);
+  function playMedia(filePath: string) {
+    // 🌟 關鍵魔法：把電腦路徑轉成網頁可讀格式！
+    const fileUrl = convertFileSrc(filePath);
     mediaPlayer.src = fileUrl;
     mediaPlayer.style.display = 'block'; 
     mediaPlayer.play();
 
     const titleDisplay = document.getElementById('song-title');
-    if (titleDisplay) titleDisplay.textContent = file.name;
+    if (titleDisplay) titleDisplay.textContent = filePath.split('\\').pop()?.split('/').pop() || "正在播放";
   } 
-
 }); 
